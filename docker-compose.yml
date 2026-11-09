@@ -1,0 +1,34 @@
+services:
+  notebook:
+    build: .
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/project
+    command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --IdentityProvider.token=''
+
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/project
+    command: streamlit run app/app.py --server.address=0.0.0.0 --server.port=8501
+
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    ports:
+      - "8080:8080"
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - PYTHONPATH=/project
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - .:/project
+    command: >
+      bash -c "airflow db migrate &&
+      airflow users create --username admin --password admin
+      --firstname Admin --lastname User --role Admin --email admin@example.com;
+      airflow scheduler & exec airflow webserver"
