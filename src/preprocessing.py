@@ -20,8 +20,8 @@ nominal_columns = ["Gender"]
 
 
 def load_data():
-    df = pd.read_csv(DATA_PATH)
-    df = df.drop(columns='Student_ID')
+    df = pd.read_csv(CLEAN_PATH)
+    df = df.drop(columns="Student_ID")
     return df
 
 
@@ -69,3 +69,17 @@ def build_preprocessor():
     ])
     
     return preprocessor
+
+RAW_PATH = os.path.join(BASE_DIR, "data", "student_mental_health.csv")
+CLEAN_PATH = os.path.join(BASE_DIR, "data", "student_mental_health_clean.csv")
+
+def clean_data():
+    df = pd.read_csv(RAW_PATH)
+
+    too_high = df["Social_Media_Hours"] > df["Screen_Time_Hours"]
+    print("Rows fixed:", too_high.sum())
+
+    df.loc[too_high, "Social_Media_Hours"] = df.loc[too_high, "Screen_Time_Hours"]
+
+    df.to_csv(CLEAN_PATH, index=False)
+    return df

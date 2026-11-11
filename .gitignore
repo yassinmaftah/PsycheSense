@@ -6,3 +6,4 @@ venv/
 airflow.db
 logs/
 data/
+models/
