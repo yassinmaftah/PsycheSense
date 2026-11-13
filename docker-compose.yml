@@ -19,11 +19,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.airflow
+    user: "0:0"
     ports:
       - "8080:8080"
     environment:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
-      - PYTHONPATH=/project
+      - AIRFLOW_HOME=/opt/airflow
+      - PYTHONPATH=/project:/home/airflow/.local/lib/python3.11/site-packages
     volumes:
       - ./dags:/opt/airflow/dags
       - .:/project

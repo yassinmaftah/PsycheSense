@@ -7,16 +7,24 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OrdinalEncoder, OneHotEncoder
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, "data", "student_mental_health.csv")
+RAW_PATH = os.path.join(BASE_DIR, "data", "student_mental_health.csv")
+CLEAN_PATH = os.path.join(BASE_DIR, "data", "student_mental_health_clean.csv")
+MODELS_DIR = os.path.join(BASE_DIR, "models")
+MODEL_PATH = os.path.join(MODELS_DIR, "psychesense_pipeline.joblib")
+CV_RESULTS_PATH = os.path.join(MODELS_DIR, "cv_results.json")
+METRICS_PATH = os.path.join(MODELS_DIR, "test_metrics.json")
 
 TARGET = "Mental_Health_Risk"
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
-numeric_columns = ["Age","Year_of_Study","Sleep_Hours","Study_Hours_Per_Week","GPA","Social_Media_Hours","Screen_Time_Hours"
-                   ,"Financial_Stress","Family_Support","Attendance_Rate"]
-ordinal_columns = ["Physical_Activity","Diet_Quality"]
-binary_columns = ["Part_Time_Job","Previous_Mental_Health_History"]
+
+numeric_columns = ["Age", "Year_of_Study", "Sleep_Hours", "Study_Hours_Per_Week", "GPA",
+                   "Social_Media_Hours", "Screen_Time_Hours", "Financial_Stress",
+                   "Family_Support", "Attendance_Rate"]
+ordinal_columns = ["Physical_Activity", "Diet_Quality"]
+binary_columns = ["Part_Time_Job", "Previous_Mental_Health_History"]
 nominal_columns = ["Gender"]
+feature_columns = numeric_columns + ordinal_columns + binary_columns + nominal_columns
 
 
 def load_data():
